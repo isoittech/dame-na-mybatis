@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-5.1.1" />
+        <option name="gradleJvm" value="#GRADLE_JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../../webauthn4j-spring-security" />
+        <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-5.1.1" />
+        <option name="gradleJvm" value="#GRADLE_JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/samples" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/samples/fido-server-conformance-test-app" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/samples/lib" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/samples/lib/spa-angular-client" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/samples/mpa" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/samples/spa" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/webauthn4j-spring-security-core" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/webauthn4j-spring-security-metadata" />
+            <option value="$PROJECT_DIR$/../../webauthn4j-spring-security/webauthn4j-spring-security-test" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

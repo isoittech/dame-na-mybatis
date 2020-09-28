@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_header :: header(~{::title})">
+  <title>User Login</title>
+</head>
+<body class="bg-light">
+
+<th:block th:replace="_nav :: nav"/>
+
+<main role="main" class="container" style="padding-top: 50px;">
+
+  <div id="at-first" class="card mt-5 shadow rounded">
+    <div class="card-header">
+      <h5>はじめに</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        このWebアプリでは、FIDO認証における認証を体験する。<br>
+        なお、事前に<a
+          href="/webauthn/register"><strong>REGISTER</strong></a>にて登録処理を実施していないと正常に処理されない。<br>
+        ちなみに、本来であればボタン1回押下と認証ダイアログへの対応を行えばよいところを、<br>
+        処理内部のパラメータ確認のため、あえてボタンを複数回押すようにしている。<br>
+        <br>
+      </p>
+    </div>
+  </div>
+
+  <div id="webauthn-login-request" class="card mt-5 shadow rounded">
+    <div class="card-header">
+      <h5>1. FIDO認証用情報を要求（ブラウザから認証サーバへ）</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">認証サーバへFIDO認証用情報を要求し、チャレンジ等の情報を要求する。</p>
+      <div class="card p-3 shadow">
+        <form action="#">
+          <label class="control-label" for="email">Email </label>
+          <input id="email" type="email" class="form-control" placeholder="you@example.com"
+                 value="test@test.test"/>
+          <div id="emailValidationMessage"></div>
+          <button id="webauthn-login-request-btn" class="btn btn-primary mt-3" type="submit">
+            FIDO認証情報要求
+          </button>
+        </form>
+      </div>
+      <div class="card mt-3 p-3 shadow">
+        <div class="form-group">
+          <label for="webauthn-login-response">レスポンス</label>
+          <textarea class="form-control auto-resize" id="webauthn-login-response" rows="3"
+                    readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="webauthn-login-response-container">
+    <input id="webauthn-login-response-json-raw" type="hidden"/>
+    <input id="cred-api-call-result-json-raw" type="hidden"/>
+  </div>
+
+  <div id="login-cred-parameter-create" class="card mt-5 shadow rounded">
+    <div class="card-header">
+      <h5>2. 認証機との処理に使用するパラメータの作成</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">認証サーバから取得したデータを元にnavigator.credentials.get()呼び出しに必要なパラメータを作成する。</p>
+      <div class="card p-3 shadow">
+        <form action="#">
+          <button id="login-cred-parameter-create-btn" class="btn btn-primary mt-2" type="submit">
+            認証機パラメータ作成
+          </button>
+        </form>
+      </div>
+      <div class="card mt-3 p-3 shadow">
+        <div class="form-group">
+          <label for="login-cred-parameter-create-result">結果</label>
+          <textarea class="form-control auto-resize" id="login-cred-parameter-create-result"
+                    rows="3"
+                    readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="login-cred-api-call" class="card mt-5 shadow rounded">
+    <div class="card-header">
+      <h5>3. navigator.credentials.get()呼び出し</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        ブラウザから認証機へアクセスするためのブラウザAPI（navigator.credentials.get()）を呼び出し、そのレスポンスを受け取る。</p>
+      <div class="card p-3 shadow">
+        <form action="#">
+          <button id="login-cred-api-call-btn" class="btn btn-primary mt-2" type="submit">
+            ブラウザAPI実行
+          </button>
+        </form>
+      </div>
+      <div class="card mt-3 p-3 shadow">
+        <div class="form-group">
+          <label for="login-cred-api-call-result">ブラウザAPI返却レスポンス ※ほぼそのまま認証サーバへ送信するもの</label>
+          <textarea class="form-control auto-resize" id="login-cred-api-call-result" rows="3"
+                    readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="public-credential-login-request" class="card mt-5 my-5 shadow rounded">
+    <div class="card-header">
+      <h5>4. ユーザ認証を要求（ブラウザから認証サーバへ）</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        ユーザ認証要求を送信する。
+      <div class="card p-3 shadow">
+        <form action="#">
+          <button id="public-credential-login-request-btn" class="btn btn-primary mt-2"
+                  type="submit">
+            ユーザ認証要求
+          </button>
+        </form>
+      </div>
+      <div class="card mt-3 p-3 shadow">
+        <div class="form-group">
+          <label for="public-credential-login-request-result">実行結果</label>
+          <textarea class="form-control auto-resize" id="public-credential-login-request-result"
+                    rows="3" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<th:block th:replace="_include :: basic"/>
+</body>
+</html>

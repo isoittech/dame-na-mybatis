@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_header :: header(~{::title})">
+  <title>User Register</title>
+</head>
+<body class="bg-light">
+
+<th:block th:replace="_nav :: nav"/>
+
+<main role="main" class="container" style="padding-top: 50px;">
+
+  <div id="at-first" class="card mt-5 shadow rounded">
+    <div class="card-header">
+      <h5>はじめに</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        このWebアプリでは、FIDO認証における登録を体験する。<br>
+        ちなみに、本来であればボタン1回押下と認証ダイアログへの対応を行えばよいところを、<br>
+        処理内部のパラメータ確認のため、あえてボタンを複数回押すようにしている。<br>
+        ※パラメータ確認不要or面倒な場合は「FIDO認証一気にやる」ボタンを押下する。失敗時はアドレスを変えて再実施すること。<br>
+      </p>
+    </div>
+  </div>
+
+  <div id="webauthn-register-request" class="card mt-5 shadow rounded">
+    <div class="card-header">
+      <h5>1. FIDO認証用情報を要求（ブラウザから認証サーバへ）</h5>
+    </div>
+    <div class="card-body">
+      <p class="card-text">認証サーバへFIDO認証用情報を要求し、チャレンジ等の情報を要求する。</p>
+      <div class="card p-3 shadow">
+        <form action="#">
+          <label class="control-label" for="email">Email </label>
+          <input id="email" type="email" class="form-control" placeholder="you@example.com"
+                 value="test@test.test"/>
+          <div id="emailValidationMessage"></div>
+          <button id="webauthn-register-request-btn" class="btn btn-primary mt-3" type="submit">
+            FIDO認証情報要求
+          </button>
+          <button id="webauthn-register-ikki-btn" class="btn btn-primary btn-outline-primary mt-3"
+                  type="submit">
+            FIDO認証一気にやる
+          </button>
+        </form>
+      </div>
+      <div class="card mt-3 p-3 shadow">
+        <div class="form-group">
+          <label for="webauthn-register-response">レスポンス</label>
+          <textarea class="form-control auto-resize" id="webauthn-register-response" rows="3"
+                    readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</main>
+
+<th:block th:replace="_include :: basic"/>
+</body>
+</html>
