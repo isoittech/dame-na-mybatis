@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_header :: header(~{::title})">
+  <title>Directly Called</title>
+</head>
+<body class="bg-light">
+
+<th:block th:replace="_nav :: nav"/>
+
+<main role="main" class="container" style="padding-top: 50px;">
+
+  <div id="left">
+    <div id="at-first" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>はじめに</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          本WebアプリはSpring Boot、MyBatis、jQuery、axios等で構成されており、@Transactionalの利用方法について検証するために開発した。<br>
+          このページでは「@TransactionalはDIされたクラスから直接呼ばれるメソッドにつけないと機能しない」ことを試してみる。<br>
+        </p>
+      </div>
+    </div>
+
+    <div id="dame-insert-with-error" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>ダメパタン（ロールバックされない例）</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          下記コードはサービス実装クラス。<br>
+          Controllerから上のメソッド「nonTransactionalInsertWithError」が呼ばれ、<br>
+          さらにその中で下段のprivateメソッド「transactionalInsertWIthErrorPrivate」が呼ばれている。<br>
+          @Transactionalが、上段には無く、下段のメソッドにはある状態。<br>
+          つまり、インジェクションされたControllerから直接実行されるメソッドに@Transactionalがついていない。<br>
+          <br>
+          この状態では正しいトランザクション制御ができない。<br>
+          下記コードを実行するため「ダメパタン」ボタンをクリック後、データ確認部で確認すると、<br>
+          例外が発生するにも関わらずロールバックが行われない（レコードが増える）ことが分かる。<br>
+
+        </p>
+        <pre class="prettyprint lang-java">
+
+          @Override
+          public void nonTransactionalInsertWithError() {
+            transactionalInsertWIthErrorPrivate();
+          }
+
+          @Transactional
+          private void transactionalInsertWIthErrorPrivate() {
+            List&lt;UserEntity&gt; users = new ArrayList&lt;&gt;();
+            users.add(createEntity("★2"));
+
+            userRepository.bulkInsert(users);
+
+            // 例外発生
+            throw new RuntimeException();
+          }
+
+      </pre>
+
+        <button id="directly-dame1-btn" class="btn btn-primary" type="submit">
+          ダメパタン
+        </button>
+
+      </div>
+    </div>
+
+
+    <div id="dame-insert-with-noerror" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>ダメパタン２（コミットされない）</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          下記コードはサービス実装クラス。<br>
+          Controllerから上のメソッド「nonTransactionalInsert」が呼ばれ、<br>
+          さらにその中で下段のprivateメソッド「transactionalInsertPrivate」が呼ばれている。<br>
+          @Transactionalが、上段には無く、下段のメソッドにはある状態。<br>
+          つまり、インジェクションされたControllerから直接実行されるメソッドに@Transactionalがついていない。<br>
+          <br>
+          この状態で下記コードを実行するため「ダメパタン2」ボタンをクリック後、データ確認部で確認すると、<br>
+          「★1」付きのレコードが増えていない（コミットされない）ことが・・・・・<br>
+          <strong>★想定ではコミットされないはず・・・何故なのか。H2 Databaseを使っているから？★</strong>
+
+        </p>
+        <pre class="prettyprint lang-java">
+
+          @Override
+          public void nonTransactionalInsert() {
+            transactionalInsertPrivate();
+          }
+
+
+          @Transactional
+          private void transactionalInsertPrivate() {
+            List&lt;UserEntity&gt; users = new ArrayList&lt;&gt;();
+            users.add(createEntity("★1"));
+
+            userRepository.bulkInsert(users);
+          }
+      </pre>
+
+        <button id="directly-dame2-btn" class="btn btn-primary" type="submit">
+          ダメパタン2
+        </button>
+
+      </div>
+    </div>
+
+    <div id="yoki-insert-with-noerror" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>OKパタン１（ただしくInsertされる例）</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          下記コードはサービス実装クラス。<br>
+          Controllerからメソッド「transactionalInsert」が呼ばれる。<br>
+          @Transactionalがある状態。<br>
+          <br>
+          この状態で下記コードを実行するため「OKパタン1」ボタンをクリック後、データ確認部で確認すると、<br>
+          レコードが増えている（コミットされる）ことが分かる。（期待通り）<br>
+        </p>
+        <pre class="prettyprint lang-java">
+
+        @Override
+        @Transactional
+        public void transactionalInsert() {
+          List&lt;UserEntity&gt; users = new ArrayList&lt;&gt;();
+          users.add(createEntity("★★1"));
+
+          userRepository.bulkInsert(users);
+        }
+
+      </pre>
+
+        <button id="directly-yoki1-btn" class="btn btn-primary" type="submit">
+          OKパタン1
+        </button>
+
+      </div>
+    </div>
+
+    <div id="yoki-insert-with-error" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>OKパタン２（ただしくロールバックされる例）</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          下記コードはサービス実装クラス。<br>
+          Controllerからメソッド「transactionalInsertWithError」が呼ばれる。<br>
+          @Transactionalがある状態。<br>
+          このメソッドでは、レコード追加処理の後、例外がスローされる。<br>
+          <br>
+          この状態で下記コードを実行するため「OKパタン2」ボタンをクリック後、データ確認部で確認すると、<br>
+          レコードが増えていない（ロールバックされる）ことが分かる。（期待通り）<br>
+
+        </p>
+        <pre class="prettyprint lang-java">
+
+        @Override
+        @Transactional
+        public void transactionalInsertWithError() {
+          List&lt;UserEntity&gt; users = new ArrayList&lt;&gt;();
+          users.add(createEntity("★★0"));
+
+          userRepository.bulkInsert(users);
+          // 例外発生
+          throw new RuntimeException();
+        }
+      </pre>
+
+        <button id="directly-yoki2-btn" class="btn btn-primary" type="submit">
+          OKパタン2
+        </button>
+
+      </div>
+    </div>
+
+    <div id="yoki-readonly" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>OKパタン３（INSERTが無視される）</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          下記コードはサービス実装クラス。<br>
+          Controllerからメソッド「readOnlyTransactionalInsert」が呼ばれる。<br>
+          @Transactionalがある状態。<br>
+          <br>
+          この状態で下記コードを実行するため「OKパタン3」ボタンをクリック後、データ確認部で確認すると、<br>
+          「★★2」付きのレコードが増えていない（INSERT処理が無視される）ことが・・・<br>
+          <strong>★想定ではINSERTされないはず・・・何故なのか。H2 Databaseを使っているから？★</strong>
+
+        </p>
+        <pre class="prettyprint lang-java">
+
+        @Override
+        @Transactional(readOnly = true)
+        public void readOnlyTransactionalInsert() {
+          List&lt;UserEntity&gt; users = new ArrayList&lt;&gt;();
+          users.add(createEntity("★★2"));
+
+          userRepository.bulkInsert(users);
+        }
+
+      </pre>
+
+        <button id="directly-yoki3-btn" class="btn btn-primary" type="submit">
+          OKパタン2
+        </button>
+
+      </div>
+    </div>
+
+
+    <div id="dame3-failed-to-insert-because-notDirectlyCalled" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>ダメパタン３（コミットされない）</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          下記コードはサービス実装クラス。<br>
+          Controllerから上のメソッド「callPublicTransactionalInsert」が呼ばれ、<br>
+          さらにその中で下段のpublicメソッド「transactionalInsertPublic_CalledFrom_AnotherPublicNonTransactionalMethod」が呼ばれている。<br>
+          @Transactionalが、上段には無く、下段のメソッドにはある状態。<br>
+          つまり、インジェクションされたControllerから直接実行されるメソッドに@Transactionalがついていない。<br>
+          <br>
+          この状態で下記コードを実行するため「ダメパタン3」ボタンをクリック後、データ確認部で確認すると、<br>
+          「★3」付きのレコードが増えていない（コミットされない）ことが・・・<br>
+          <strong>★想定ではINSERTされない（コミットされない）はず・・・何故なのか。H2 Databaseを使っているから？★</strong>
+
+
+        </p>
+        <pre class="prettyprint lang-java">
+
+        @Override
+        public void callPublicTransactionalInsert() {
+          transactionalInsertPublic_CalledFrom_AnotherPublicNonTransactionalMethod();
+        }
+
+        @Transactional
+        public void transactionalInsertPublic_CalledFrom_AnotherPublicNonTransactionalMethod() {
+          List&lt;UserEntity&gt; users = new ArrayList&lt;&gt;();
+          users.add(createEntity("★3"));
+
+          userRepository.bulkInsert(users);
+        }
+
+      </pre>
+
+        <button id="directly-dame3-btn" class="btn btn-primary" type="submit">
+          ダメパタン3
+        </button>
+
+      </div>
+    </div>
+
+
+    <div id="dame4-failed-to-insert-because-notDirectlyCalled" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>ダメパタン４（ロールバックされない）</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          下記コードはサービス実装クラス。<br>
+          Controllerから上のメソッド「callPublicTransactionalInsertWithError」が呼ばれ、<br>
+          さらにその中で下段のpublicメソッド「transactionalInsertWIthErrorPublic_CalledFrom_AnotherPublicNonTransactionalMethod」が呼ばれている。<br>
+          @Transactionalが、上段には無く、下段のメソッドにはある状態。<br>
+          つまり、インジェクションされたControllerから直接実行されるメソッドに@Transactionalがついていない。<br>
+          <br>
+          この状態で下記コードを実行するため「ダメパタン4」ボタンをクリック後、データ確認部で確認すると、<br>
+          「★4」付きのレコードが増えている（ロールバックされない）ことが・・・<br>
+          <strong>★想定ではロールバックされずにINSERTされるはず・・・何故なのか。H2 Databaseを使っているから？★</strong>
+
+
+        </p>
+        <pre class="prettyprint lang-java">
+
+          @Override
+          public void callPublicTransactionalInsertWithError() {
+            transactionalInsertWIthErrorPublic_CalledFrom_AnotherPublicNonTransactionalMethod();
+          }
+
+          @Transactional
+          public void transactionalInsertWIthErrorPublic_CalledFrom_AnotherPublicNonTransactionalMethod() {
+            List&lt;UserEntity&gt; users = new ArrayList&lt;&gt;();
+            users.add(createEntity("★4"));
+
+            userRepository.bulkInsert(users);
+
+            // 例外発生
+            throw new RuntimeException();
+          }
+
+
+      </pre>
+
+        <button id="directly-dame4-btn" class="btn btn-primary" type="submit">
+          ダメパタン4
+        </button>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div id="right">
+    <div id="fetch-data" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>データ確認部</h5>
+      </div>
+      <div class="card-body">
+        <div class="card p-3 shadow">
+          <form action="#">
+            <button id="data-request-btn" class="btn btn-primary mt-1" type="submit">
+              データ取得
+            </button>
+            <button id="data-reset-btn" class="btn btn-primary mt-1" type="submit">
+              データリセット
+            </button>
+          </form>
+        </div>
+        <div class="card mt-3 p-3 shadow">
+          <div class="form-group">
+            <label for="result">結果</label>
+            <div id="result"></div>
+          </div>
+        </div>
+        <div class="card mt-3 p-3 shadow">
+          <div class="form-group">
+            <label for="raw-response">参考：レスポンス</label>
+            <textarea class="form-control auto-resize" id="raw-response" rows="3"
+                      readonly></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="clearFix"></div>
+
+</main>
+
+<th:block th:replace="_include :: basic"/>
+</body>
+</html>

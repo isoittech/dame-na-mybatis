@@ -44,7 +44,7 @@ sample/java/webauthn/app/web/form/PublicKeyCredentialRequestForm.java
 sample/java/webauthn/domain/dto/ValidateCredentialDto.java
  sample.java.damebatis.domain.dto.ValidateCredentialDto
 sample/java/webauthn/domain/service/WebauthnServiceImpl.java
- sample.java.damebatis.domain.service.WebauthnServiceImpl
+ sample.java.damebatis.domain.service.UserServiceImpl
 sample/java/webauthn/app/web/WebAuthnErrorController.java
  sample.java.webauthn.app.web.WebAuthnErrorController
 sample/java/webauthn/app/web/form/UserLoginParameterRequestForm.java
@@ -55,7 +55,7 @@ sample/java/webauthn/app/web/response/ResponseData.java
 sample/java/webauthn/domain/exception/UserException.java
  sample.java.damebatis.domain.exception.UserException
 sample/java/webauthn/domain/service/WebauthnService.java
- sample.java.damebatis.domain.service.WebauthnService
+ sample.java.damebatis.domain.service.UserService
 sample/java/webauthn/domain/dto/UserAuthenticationOption.java
  sample.java.damebatis.domain.dto.UserAuthenticationOption
  sample.java.damebatis.domain.dto.UserAuthenticationOption$UserAuthenticationOptionBuilder

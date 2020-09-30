@@ -10,6 +10,8 @@ spring:
     url: jdbc:h2:mem:webauthn;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
     username: sa
     password:
+    hikari:
+      auto-commit: false
   #  jpa:
   #    open-in-view: true
   #    generate-ddl: true
@@ -42,7 +44,7 @@ spring:
 server:
   port: 55501
 
-logging.file: webauthn.log
+logging.file: dametran.log
 logging:
   file:
     max-size: 50MB
@@ -51,9 +53,9 @@ logging:
     root: info
     org.springframework: info
     org.hibernate: info
-    org.hibernate.SQL: debug
-    org.thymeleaf: debug
-    org.thymeleaf.TemplateEngine.CONFIG: trace
-    org.thymeleaf.TemplateEngine.TIMER: trace
-    org.thymeleaf.TemplateEngine.cache.TEMPLATE_CACHE: trace
-    com.example.demo: debug
+    org.hibernate.SQL: info
+    org.thymeleaf: info
+    org.thymeleaf.TemplateEngine.CONFIG: info
+    org.thymeleaf.TemplateEngine.TIMER: info
+    org.thymeleaf.TemplateEngine.cache.TEMPLATE_CACHE: info
+    sample.java.damebatis: info

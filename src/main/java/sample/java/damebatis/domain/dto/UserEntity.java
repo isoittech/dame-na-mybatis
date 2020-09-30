@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"email", "challenge", "rp", "user", "attestation"})
+@JsonPropertyOrder({"email", "challenge", "attestation"})
 @ToString
 @Data
 @Builder
@@ -33,11 +33,6 @@ public class UserEntity implements Serializable {
   @JsonProperty("challenge")
   private String challenge;
 
-  @JsonProperty("rp")
-  private Rp rp;
-
-  @JsonProperty("user")
-  private FidoUser fidoUser;
 
   @JsonProperty("attestation")
   private String attestation;

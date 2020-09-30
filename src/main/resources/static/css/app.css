@@ -8,3 +8,36 @@
 .rightBottomFixed:hover{
     opacity: 1;
 }
+
+.move_scroll_icon{
+  width: 50px; height:50px;
+}
+
+.move_scroll_icon:hover{
+  cursor: pointer;
+}
+
+.container {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#left{
+  float: left;
+}
+
+#right{
+  float: left;
+  margin-left: 50px;
+
+  position: -webkit-sticky; /* Safari用 */
+  position:sticky; /* 要素をスクロールに応じて固定 */
+  top:50px; /* 縦スクロールに追従 */
+  z-index: 100; /* z-indexで最前面に持ってくる */
+
+}
+
+.clearFix{
+  clear: both;
+}

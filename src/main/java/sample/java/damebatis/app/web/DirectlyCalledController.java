@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("damebatis")
+@RequestMapping("directlyCalled")
 @Slf4j
-public class DameBatisController {
-  @GetMapping("/")
+public class DirectlyCalledController {
+  @GetMapping
   public String damebatis(Model model) {
-    return "damebatis";
+    return "directlyCalled";
   }
 }
