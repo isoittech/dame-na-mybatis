@@ -2,12 +2,12 @@ spring:
   application:
     name: Demo project for Spring Boot with WebAuthn, MyBatis and Thymeleaf
   profiles:
-    active: local
+    active: local-postgres
   output:
     ansi:
       enabled: detect
   datasource:
-    url: jdbc:h2:mem:webauthn;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
+    url: jdbc:h2:mem:dametran;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
     username: sa
     password:
     hikari:

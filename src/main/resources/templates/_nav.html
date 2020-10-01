@@ -11,10 +11,30 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/directlyCalled/">DIRECTLY CALLED</a>
+      <!--      <li class="nav-item">
+              <a class="nav-link" href="/directlyCalled/">DIRECTLY CALLED</a>
+            </li>-->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="/directlyCalled/" id="navbarDropdown"
+           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          DIRECTLY CALLED
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div style="margin-left: 10px;"><strong>ダメ</strong></div>
+          <a class="dropdown-item scroll-link" data-id="#dame-insert-with-error">1: ロールバックされない例</a>
+          <a class="dropdown-item scroll-link" data-id="#dame-insert-with-noerror">2: コミットされない例</a>
+          <a class="dropdown-item scroll-link"
+             data-id="#dame3-failed-to-insert-because-notDirectlyCalled">3: コミットされない例（public版）</a>
+          <a class="dropdown-item scroll-link"
+             data-id="#dame4-failed-to-rollback-because-notDirectlyCalled">4: ロールバックされない例（public版）</a>
+          <div class="dropdown-divider"></div>
+          <div style="margin-left: 10px;"><strong>OK</strong></div>
+          <a class="dropdown-item scroll-link"
+             data-id="#yoki-insert-with-noerror">1: ただしくInsertされる例</a>
+          <a class="dropdown-item scroll-link" data-id="#yoki-insert-with-error">2: ただしくロールバックされる例</a>
+          <a class="dropdown-item scroll-link" data-id="#yoki-readonly">3: INSERTが無視されるorエラーになる</a>
+        </div>
       </li>
-
   </div>
 </nav>
 </body>

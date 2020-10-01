@@ -81,7 +81,8 @@
           <br>
           この状態で下記コードを実行するため「ダメパタン2」ボタンをクリック後、データ確認部で確認すると、<br>
           「★1」付きのレコードが増えていない（コミットされない）ことが・・・・・<br>
-          <strong>★想定ではコミットされないはず・・・何故なのか。H2 Databaseを使っているから？★</strong>
+          <strong>想定では@Transactionalが機能しないのでコミットされないはず・・・何故なのか。<br>
+            2種類のDBで検証した結果、H2 Database、Postgresではレコードが増えてしまった。Auto Commitの設定が何処かで効いている？</strong>
 
         </p>
         <pre class="prettyprint lang-java">
@@ -179,7 +180,7 @@
 
     <div id="yoki-readonly" class="card mt-5 shadow rounded">
       <div class="card-header">
-        <h5>OKパタン３（INSERTが無視される）</h5>
+        <h5>OKパタン３（INSERTが無視されるorエラーになる）</h5>
       </div>
       <div class="card-body">
         <p class="card-text">
@@ -187,9 +188,9 @@
           Controllerからメソッド「readOnlyTransactionalInsert」が呼ばれる。<br>
           @Transactionalがある状態。<br>
           <br>
-          この状態で下記コードを実行するため「OKパタン3」ボタンをクリック後、データ確認部で確認すると、<br>
-          「★★2」付きのレコードが増えていない（INSERT処理が無視される）ことが・・・<br>
-          <strong>★想定ではINSERTされないはず・・・何故なのか。H2 Databaseを使っているから？★</strong>
+          この状態で下記コードを実行するため「OKパタン3」ボタンをクリック後、データ確認部で確認すると・・・<br>
+          <strong>→→ この挙動は、利用しているトランザクションマネージャやドライバクラスの実装によって異なる。<br>
+            2種類のDBで検証したところ、結果、H2では無視されずにINSERTされ、PostgresではINSERT実行時にエラーとなった（結果、レコードは増えない）★</strong>
 
         </p>
         <pre class="prettyprint lang-java">
@@ -206,7 +207,7 @@
       </pre>
 
         <button id="directly-yoki3-btn" class="btn btn-primary" type="submit">
-          OKパタン2
+          OKパタン3
         </button>
 
       </div>
@@ -215,7 +216,7 @@
 
     <div id="dame3-failed-to-insert-because-notDirectlyCalled" class="card mt-5 shadow rounded">
       <div class="card-header">
-        <h5>ダメパタン３（コミットされない）</h5>
+        <h5>ダメパタン３（コミットされない（public版））</h5>
       </div>
       <div class="card-body">
         <p class="card-text">
@@ -226,10 +227,9 @@
           つまり、インジェクションされたControllerから直接実行されるメソッドに@Transactionalがついていない。<br>
           <br>
           この状態で下記コードを実行するため「ダメパタン3」ボタンをクリック後、データ確認部で確認すると、<br>
-          「★3」付きのレコードが増えていない（コミットされない）ことが・・・<br>
-          <strong>★想定ではINSERTされない（コミットされない）はず・・・何故なのか。H2 Databaseを使っているから？★</strong>
-
-
+          「★3」付きのレコードが増えていない（コミットされない）ことが・・・・・あれ、増えた。<br>
+          <strong>想定では@Transactionalが機能しないのでコミットされないはず・・・何故なのか。<br>
+            2種類のDBで検証した結果、H2 Database、Postgresではレコードが増えてしまった。Auto Commitの設定が何処かで効いている？</strong>
         </p>
         <pre class="prettyprint lang-java">
 
@@ -256,7 +256,7 @@
     </div>
 
 
-    <div id="dame4-failed-to-insert-because-notDirectlyCalled" class="card mt-5 shadow rounded">
+    <div id="dame4-failed-to-rollback-because-notDirectlyCalled" class="card mt-5 shadow rounded">
       <div class="card-header">
         <h5>ダメパタン４（ロールバックされない）</h5>
       </div>
@@ -268,10 +268,9 @@
           @Transactionalが、上段には無く、下段のメソッドにはある状態。<br>
           つまり、インジェクションされたControllerから直接実行されるメソッドに@Transactionalがついていない。<br>
           <br>
-          この状態で下記コードを実行するため「ダメパタン4」ボタンをクリック後、データ確認部で確認すると、<br>
-          「★4」付きのレコードが増えている（ロールバックされない）ことが・・・<br>
-          <strong>★想定ではロールバックされずにINSERTされるはず・・・何故なのか。H2 Databaseを使っているから？★</strong>
-
+          この状態で下記コードを実行するため「ダメパタン4」ボタンをクリック後、データ確認部で確認すると、・・・<br>
+          <strong>→→ この挙動は、利用しているトランザクションマネージャやドライバクラスの実装によって異なる。<br>
+            2種類のDBで検証したところ、結果、H2では無視されてINSERTされず（レコード増えない）、PostgresではINSERTされた（ロールバックされなかった）。</strong>
 
         </p>
         <pre class="prettyprint lang-java">

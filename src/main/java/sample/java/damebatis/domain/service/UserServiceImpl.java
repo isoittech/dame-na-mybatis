@@ -94,7 +94,6 @@ public class UserServiceImpl implements UserService {
     transactionalInsertWIthErrorPublic_CalledFrom_AnotherPublicNonTransactionalMethod();
   }
 
-
   @Transactional
   private void transactionalInsertPrivate() {
     List<UserEntity> users = new ArrayList<>();

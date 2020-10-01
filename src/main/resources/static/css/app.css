@@ -25,17 +25,23 @@
 
 #left{
   float: left;
+  width: 1100px;
 }
 
 #right{
   float: left;
   margin-left: 50px;
+  width: 600px;
 
   position: -webkit-sticky; /* Safari用 */
   position:sticky; /* 要素をスクロールに応じて固定 */
   top:50px; /* 縦スクロールに追従 */
   z-index: 100; /* z-indexで最前面に持ってくる */
 
+}
+
+.scroll-link:hover{
+  cursor: pointer;
 }
 
 .clearFix{

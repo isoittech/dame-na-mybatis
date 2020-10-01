@@ -194,7 +194,6 @@ $(async function () {
     return false;
   });
 
-
   // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
   // 「DIコンテナから直接呼ばれないと機能しない」検証
   //  OKパタン3ボタン クリックハンドラ
@@ -216,11 +215,30 @@ $(async function () {
 
   // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
   // 「DIコンテナから直接呼ばれないと機能しない」検証
-  //  ダメパタン4ボタン クリックハンドラ
+  //  ダメパタン3ボタン クリックハンドラ
   // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
   $("#directly-dame3-btn").on('click', async function () {
     try {
       const response = await axios.get('/directlyCalled/dame3');
+      console.log("APIリクエスト成功")
+      await requestAndPrintData();
+
+    } catch (error) {
+      console.log("API実行エラールート")
+      await requestAndPrintData();
+    }
+
+    return false;
+  });
+
+
+  // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+  // 「DIコンテナから直接呼ばれないと機能しない」検証
+  //  ダメパタン4ボタン クリックハンドラ
+  // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+  $("#directly-dame4-btn").on('click', async function () {
+    try {
+      const response = await axios.get('/directlyCalled/dame4');
       console.log("APIリクエスト成功")
       await requestAndPrintData();
 
@@ -268,10 +286,18 @@ $(async function () {
   // 画面上部へ遷移する機能
   // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
   $('.rightBottomFixed').click(function () {
-    $("html, body").animate({ scrollTop: $(document).height() }, 500);
-//    $("html, body").animate({ scrollTop: $("#fetch-data").scrollTop() }, 500);
+//    $("html, body").animate({ scrollTop: $(document).height() }, 500);
+    $("html, body").animate({ scrollTop: 0 }, 500);
 //    $('html,body').animate({ 'scrollTop': 0 }, 500);
 
+  });
+
+  // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+  // href属性で指定しているIDの位置へスクロールする
+  // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+  $('.scroll-link').click(function () {
+    const positionId = $(this).data('id');
+    $("html, body").animate({ scrollTop: $(positionId).position().top - 100 }, 500);
   });
 
 
