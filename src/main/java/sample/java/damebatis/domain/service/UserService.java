@@ -22,4 +22,8 @@ public interface UserService {
   void callPublicTransactionalInsert();
 
   void callPublicTransactionalInsertWithError();
+
+  void call_readOnlyTransactionalInsert2();
+
+  void readOnlyTransactionalInsert2();
 }

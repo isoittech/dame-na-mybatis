@@ -25,13 +25,13 @@
 
 #left{
   float: left;
-  width: 1100px;
+  width: 1000px;
 }
 
 #right{
   float: left;
   margin-left: 50px;
-  width: 600px;
+  width: 700px;
 
   position: -webkit-sticky; /* Safari用 */
   position:sticky; /* 要素をスクロールに応じて固定 */

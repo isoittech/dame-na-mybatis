@@ -250,6 +250,24 @@ $(async function () {
     return false;
   });
 
+  // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+  // 「DIコンテナから直接呼ばれないと機能しない」検証
+  //  ダメパタン5ボタン クリックハンドラ
+  // ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+  $("#directly-dame5-btn").on('click', async function () {
+    try {
+      const response = await axios.get('/directlyCalled/dame5');
+      console.log("APIリクエスト成功")
+      await requestAndPrintData();
+
+    } catch (error) {
+      console.log("API実行エラールート")
+      await requestAndPrintData();
+    }
+
+    return false;
+  });
+
 
 
 

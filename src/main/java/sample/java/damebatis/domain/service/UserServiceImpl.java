@@ -94,6 +94,20 @@ public class UserServiceImpl implements UserService {
     transactionalInsertWIthErrorPublic_CalledFrom_AnotherPublicNonTransactionalMethod();
   }
 
+  @Override
+  public void call_readOnlyTransactionalInsert2() {
+    readOnlyTransactionalInsert2();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public void readOnlyTransactionalInsert2() {
+    List<UserEntity> users = new ArrayList<>();
+    users.add(createEntity("★★3"));
+
+    userRepository.bulkInsert(users);
+  }
+
   @Transactional
   private void transactionalInsertPrivate() {
     List<UserEntity> users = new ArrayList<>();

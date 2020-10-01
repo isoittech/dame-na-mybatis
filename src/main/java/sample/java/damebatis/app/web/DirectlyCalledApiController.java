@@ -82,4 +82,13 @@ public class DirectlyCalledApiController {
         new ResponseData().builder().status(HttpStatus.OK).message("処理は成功").build();
     return responseData;
   }
+
+  @GetMapping("dame5")
+  public ResponseData dame5() {
+    userService.call_readOnlyTransactionalInsert2();
+
+    ResponseData responseData =
+        new ResponseData().builder().status(HttpStatus.OK).message("処理は成功").build();
+    return responseData;
+  }
 }

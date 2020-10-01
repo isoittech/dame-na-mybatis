@@ -302,6 +302,49 @@
     </div>
 
 
+    <div id="dame5-readOnlyTrue-but-calledNotDirectly" class="card mt-5 shadow rounded">
+      <div class="card-header">
+        <h5>ダメパタン５（ReadOnlyが効かない）</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          下記コードはサービス実装クラス。<br>
+          Controllerから上のメソッド「call_readOnlyTransactionalInsert2」が呼ばれ、<br>
+          さらにその中で下段のpublicメソッド「readOnlyTransactionalInsert2」が呼ばれている。<br>
+          @Transactionalが、上段には無く、下段のメソッドにはある状態。<br>
+          つまり、インジェクションされたControllerから直接実行されるメソッドに@Transactionalがついていない。<br>
+          <br>
+          この状態で下記コードを実行するため「ダメパタン5」ボタンをクリック後、データ確認部で確認すると、・・・<br>
+          <strong>→→ この挙動は、利用しているトランザクションマネージャやドライバクラスの実装によって異なる。<br>
+            PostgresではINSERTされた（ロールバックされなかった）。</strong>
+
+        </p>
+        <pre class="prettyprint lang-java">
+
+          @Override
+          public void call_readOnlyTransactionalInsert2() {
+            readOnlyTransactionalInsert2();
+          }
+
+          @Override
+          @Transactional(readOnly = true)
+          public void readOnlyTransactionalInsert2() {
+            List&lt;UserEntity&gt; users = new ArrayList&lt;&gt;();
+            users.add(createEntity("★★3"));
+
+            userRepository.bulkInsert(users);
+          }
+
+      </pre>
+
+        <button id="directly-dame5-btn" class="btn btn-primary" type="submit">
+          ダメパタン5
+        </button>
+
+      </div>
+    </div>
+
+
   </div>
 
   <div id="right">
